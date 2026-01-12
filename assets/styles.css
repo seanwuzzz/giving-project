@@ -388,3 +388,47 @@
     .meeting-item .dot{ position: absolute; left: 0; top: 4px; }
     .meeting-item .desc{ max-width: none; }
   }
+
+/* Mobile menu button (default hidden on desktop) */
+.menu-btn{
+  display:none;
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--fg);
+  border-radius:14px;
+  padding:10px 12px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+/* Mobile dropdown */
+.mobile-menu{
+  display:none;
+  border-top:1px solid var(--border);
+  background:rgba(255,255,255,.98);
+  backdrop-filter: blur(10px);
+}
+
+.mobile-menu a{
+  display:block;
+  padding:12px 24px;
+  color:var(--muted);
+  font-weight:700;
+}
+.mobile-menu a:hover{
+  background:var(--primary-light);
+  color:var(--primary);
+}
+.mobile-menu a.active{
+  background:var(--primary-light);
+  color:var(--primary);
+  font-weight:900;
+}
+
+/* <=720px show hamburger, hide desktop links */
+@media (max-width: 720px){
+  .nav-links{ display:none; }
+  .menu-btn{ display:inline-flex; align-items:center; justify-content:center; }
+  .mobile-menu.open{ display:block; }
+}
+
