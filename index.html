@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <title>Giving 行動計畫｜計畫介紹</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Giving 行動計畫：支持年輕世代在三個月內將想法轉化為實際社會行動的實踐型計畫。">
+
+  <style>
+
+    :root{
+      --primary: #2F5D50;        /* 深橄欖綠 */
+      --primary-dark: #244841;  /* 深一階（hover / 強調） */
+      --primary-light: #E6F0EC; /* 淺橄欖綠（背景、badge） */
+
+      --fg: #1C1C1C;            /* 主文字：黑 */
+      --muted: #5F6B66;         /* 次要文字 */
+      --bg: #FFFFFF;            /* 主背景 */
+      --soft: #F6F7F6;          /* 區塊背景 */
+      --border: #E3E6E4;         /* 邊框 */
+
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(0,0,0,.06);
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family:-apple-system, BlinkMacSystemFont, "Noto Sans TC","PingFang TC","Microsoft JhengHei", Arial, sans-serif;
+      color:var(--fg);
+      background:var(--bg);
+      line-height:1.7;
+    }
+    a{ color:inherit; text-decoration:none; }
+    .container{
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* Top Nav */
+    .nav{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,.9);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-inner{
+      max-width:1040px;
+      margin:0 auto;
+      padding: 12px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+      letter-spacing:.2px;
+      white-space:nowrap;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:999px;background:#111;display:inline-block;
+    }
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .nav-links a{
+      font-size:14px;
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:10px;
+    }
+    .nav-links a:hover{ background:var(--soft); color:var(--fg); }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      font-weight:700;
+      font-size:14px;
+      cursor:pointer;
+      transition: transform .06s ease;
+      user-select:none;
+    }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background:var(--primary);
+      color:#fff;
+      border-color:var(--primary);
+    }
+    .btn.ghost{ background:#fff; color:#111; }
+    .btn.small{ padding:8px 12px; border-radius:12px; }
+
+    /* Hero */
+    .hero{
+      padding: 34px 0 10px;
+    }
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 7px 10px;
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:999px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    h1{
+      font-size:44px;
+      line-height:1.15;
+      margin: 6px 0 10px;
+      letter-spacing:-0.6px;
+    }
+    .lead{
+      font-size:18px;
+      color:var(--muted);
+      max-width: 72ch;
+      margin:0 0 16px;
+    }
+    .hero-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .panel{
+      border:1px solid var(--border);
+      background: var(--soft);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .panel h3{
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+    .panel p{ margin:0; color:var(--muted); }
+    .panel .meta{
+      display:grid;
+      gap:10px;
+      margin-top:12px;
+    }
+    .meta-item{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .meta-item .k{
+      font-weight:800;
+      font-size:13px;
+      margin:0 0 2px;
+    }
+    .meta-item .v{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* Sections */
+    section{
+      padding: 26px 0;
+      border-top:1px solid var(--border);
+    }
+    .section-title{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+    }
+    h2{
+      margin:0;
+      font-size:22px;
+      letter-spacing:-0.2px;
+    }
+    .hint{ color:var(--muted); font-size:14px; }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .card{
+      grid-column: span 6;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .card.soft{
+      background: var(--soft);
+      box-shadow: var(--shadow);
+    }
+    .card h3{
+      margin:0 0 8px;
+      font-size:16px;
+    }
+    .card p{ margin:0; color:var(--muted); }
+    ul{ margin:10px 0 0; padding-left: 18px; color:var(--muted); }
+    li{ margin: 6px 0; }
+
+    /* Timeline */
+    .timeline{
+      display:grid;
+      gap:10px;
+      margin-top:10px;
+    }
+    .step{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding: 12px 12px;
+      border:1px solid var(--border);
+      border-radius: 16px;
+      background:#fff;
+    }
+    .step .num{
+      width:28px;height:28px;border-radius:10px;
+      background:var(--primary);color:#fff;
+      display:flex;align-items:center;justify-content:center;
+      font-weight:800;font-size:13px; flex: 0 0 auto;
+    }
+    .step .txt .t{ font-weight:800; margin:0 0 2px; }
+    .step .txt .d{ margin:0; color:var(--muted); font-size:14px; }
+
+    /* CTA band */
+    .cta-band{
+      background:var(--primary);
+      color:#fff;
+      border-radius: 22px;
+      padding: 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      margin-top: 8px;
+    }
+    .cta-band p{ margin:0; color: rgba(255,255,255,.82); }
+    .cta-band .btn{ border-color: rgba(255,255,255,.18); }
+    .cta-band .btn.primary{ background:#fff; color:var(--primary); border-color:#fff; }
+
+    footer{
+      border-top:1px solid var(--border);
+      padding: 28px 0 46px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .hero-grid{ grid-template-columns: 1fr; }
+      h1{ font-size:34px; }
+    }
+    @media (max-width: 720px){
+      .card{ grid-column: span 12; }
+      .nav-links a{ display:none; } /* 手機先簡化：保留按鈕即可 */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ✅ 你只要改這個連結 -->
+  <script>
+    const FORM_URL = "https://example.com"; // TODO: 改成你的 Google 表單連結
+    function goApply(){ window.open(FORM_URL, "_blank", "noopener"); }
+  </script>
+
+  <!-- 導覽列 -->
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="brand"><span class="dot"></span>Giving 行動計畫</div>
+      <div class="nav-links">
+        <a href="index.html">計畫介紹</a>
+        <a href="apply.html">申請辦法</a>
+        <a href="outcomes.html">行動成果</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <button class="btn primary" onclick="goApply()">立即報名</button>
+    </div>
+  </div>
+
+  <main class="container">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="badge-row">
+        <div class="badge">4 個月｜可執行、可完成</div>
+        <div class="badge">經費支持｜里程碑階段性發放</div>
+        <div class="badge">每月線下聚會</div>
+      </div>
+
+      <div class="hero-grid">
+        <div>
+          <h1>把信仰活進生活<br>用行動回應世界的需要</h1>
+          <p class="lead">
+            Giving 行動計畫是一項支持年輕世代發起社會行動的實踐型計畫，聚焦於「可執行、可完成」的行動提案。
+            透過經費支持與實體討論，本計畫協助參與者在三個月內將想法轉化為實際行動，累積真實影響，在社會中發揮正向力量。
+          </p>
+          <div class="hero-actions">
+            <button class="btn primary" onclick="goApply()">立即報名</button>
+            <a class="btn ghost" href="#timeline">查看期程</a>
+            <a class="btn ghost" href="#eligibility">申請資格</a>
+          </div>
+
+          <div class="cta-band" style="margin-top:18px;">
+            <div>
+              <strong>報名截止：</strong>2026/1/28 23:59（名額上限 10 人，超額將篩選）
+              <p style="margin-top:6px;">優先錄取具體、可在三個月內完成行動的提案。</p>
+            </div>
+            <button class="btn primary" onclick="goApply()">立即報名</button>
+          </div>
+        </div>
+
+        <aside class="panel">
+          <h3>重點資訊</h3>
+          <p>快速掌握參與前你最需要知道的事。</p>
+          <div class="meta">
+            <div class="meta-item">
+              <p class="k">執行期間</p>
+              <p class="v">2026 年 2 月 – 2026 年 5 月</p>
+            </div>
+            <div class="meta-item">
+              <p class="k">實體聚會</p>
+              <p class="v">每月 1 次，共 4 次</p>
+            </div>
+            <div class="meta-item">
+              <p class="k">資助方式</p>
+              <p class="v">行動導向、里程碑式階段性發放</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <section id="timeline">
+      <div class="section-title">
+        <h2>計畫期程</h2>
+        <div class="hint">每月一次實體聚會｜共 4 次</div>
+      </div>
+
+      <div class="grid">
+        <div class="card soft" style="grid-column: span 12;">
+          <div class="timeline">
+            <div class="step">
+              <div class="num">1</div>
+              <div class="txt">
+                <p class="t">報名與甄選</p>
+                <p class="d">截止：2026/1/28 23:59（名額上限 10 人，超額將篩選）</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="num">2</div>
+              <div class="txt">
+                <p class="t">執行期（3 個月）</p>
+                <p class="d">2026 年 2 月 – 2026 年 5 月：將想法轉化為實際行動</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="num">3</div>
+              <div class="txt">
+                <p class="t">每月線下聚會（共 4 次）</p>
+                <p class="d">討論、分享進度、互相回饋（含結案會議）</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Content -->
+    <section>
+      <div class="section-title">
+        <h2>計畫內容</h2>
+        <div class="hint">形式不限｜題材不限｜創意不限</div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>申請核心</h3>
+          <p>只要你的行動核心是「耶穌基督作在最小弟兄身上、發揮社會影響力」即可申請。</p>
+          <ul>
+            <li>形式、題材、創意不限</li>
+            <li>規模以「可於 3 個月內完成」為原則</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>行動舉例（不限於此）</h3>
+          <ul>
+            <li>職涯分享／技能交換工作坊</li>
+            <li>協助獨居長者、弱勢族群</li>
+            <li>環保、淨灘、地方行動計畫</li>
+          </ul>
+          <div style="margin-top:12px;">
+            <button class="btn primary" onclick="goApply()">我想提案 → 立即報名</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Funding -->
+    <section>
+      <div class="section-title">
+        <h2>資助方式</h2>
+        <div class="hint">先完成，再進到下一階段</div>
+      </div>
+
+      <div class="grid">
+        <div class="card soft">
+          <h3>里程碑式發放</h3>
+          <p>採「行動導向、里程碑式」階段性發放：前一階段任務達成，才能取得下一階段資金。</p>
+        </div>
+        <div class="card soft">
+          <h3>合理成本、非個人收益</h3>
+          <p>專案內容合理、可實踐者資助金額無上限，但預算需為合理成本與費用所需，非取得個人收益。</p>
+        </div>
+        <div class="card soft" style="grid-column: span 12;">
+          <h3>未執行／未回報將無法獲得後續資助</h3>
+          <p>本計畫支持「做出來的行動」。若未實際執行或未回報進度，將無法獲得後續資助。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Eligibility -->
+    <section id="eligibility">
+      <div class="section-title">
+        <h2>申請資格</h2>
+        <div class="hint">願意投入行動並分享成果</div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>資格對象</h3>
+          <ul>
+            <li>聖約翰座堂週六青年聚會、臺北真理堂學青網絡及教友</li>
+            <li>願意實際投入行動與分享成果者</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>參與者需要做什麼？</h3>
+          <ul>
+            <li>提交完整計畫書（格式見報名表單）</li>
+            <li>親自執行你的行動計畫</li>
+            <li>參與 4 次實體聚會討論與分享進度</li>
+            <li>提供成果紀錄（照片／影片／文字）</li>
+            <li>對自己的行動負責</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cta-band">
+        <div>
+          <strong>準備好了就開始。</strong>
+          <p style="margin-top:6px;">用四個月，把你的想法做出來，讓祝福被看見。</p>
+        </div>
+        <button class="btn primary" onclick="goApply()">立即報名</button>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section>
+      <div class="section-title">
+        <h2>聯絡方式</h2>
+        <div class="hint"></div>
+      </div>
+      <div class="grid">
+        <div class="card soft" style="grid-column: span 12;">
+          <p style="margin:0;color:var(--muted);">
+            若有其他疑問，歡迎寄信至：
+            <strong style="color:#111;">seanwu000tw@gmail.com</strong>
+          </p>
+          <div style="margin-top:12px;">
+            <button class="btn primary" onclick="goApply()">立即報名</button>
+            <a class="btn ghost" href="#timeline">回到期程</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <div>© Giving 行動計畫</div>
+    </div>
+  </footer>
+</body>
+</html>
