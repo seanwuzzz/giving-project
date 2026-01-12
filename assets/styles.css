@@ -1,4 +1,43 @@
-  :root{
+
+.card h2{ margin:0 0 8px; font-size:16px; }
+
+.row{ display:flex; gap:12px; align-items:flex-start; }
+
+.icon{
+  width:40px; height:40px; border-radius:14px;
+  background:var(--primary-light); color:var(--primary);
+  display:flex; align-items:center; justify-content:center;
+  font-weight:900;
+  flex: 0 0 auto;
+}
+
+.email{
+  display:inline-block;
+  margin-top:10px;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:var(--soft);
+  font-weight:800;
+  color:var(--fg);
+}
+
+.tag{
+  display:inline-flex;
+  align-items:center;
+  padding:6px 10px;
+  border-radius:999px;
+  background:var(--primary-light);
+  color:var(--primary);
+  font-weight:800;
+  font-size:12px;
+}
+
+/* =========================
+   Main styles (authoritative)
+   ========================= */
+
+:root{
     --primary: #2F5D50;
     --primary-dark: #244841;
     --primary-light: #E6F0EC;
