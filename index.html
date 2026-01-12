@@ -7,21 +7,21 @@
   <meta name="description" content="Giving 行動計畫：支持年輕世代在三個月內將想法轉化為實際社會行動的實踐型計畫。">
 
   <style>
-
     :root{
-      --primary: #2F5D50;        /* 深橄欖綠 */
-      --primary-dark: #244841;  /* 深一階（hover / 強調） */
-      --primary-light: #E6F0EC; /* 淺橄欖綠（背景、badge） */
+      --primary: #2F5D50;
+      --primary-dark: #244841;
+      --primary-light: #E6F0EC;
 
-      --fg: #1C1C1C;            /* 主文字：黑 */
-      --muted: #5F6B66;         /* 次要文字 */
-      --bg: #FFFFFF;            /* 主背景 */
-      --soft: #F6F7F6;          /* 區塊背景 */
-      --border: #E3E6E4;         /* 邊框 */
+      --fg: #1C1C1C;
+      --muted: #5F6B66;
+      --bg: #FFFFFF;
+      --soft: #F6F7F6;
+      --border: #E3E6E4;
 
       --radius: 18px;
       --shadow: 0 10px 30px rgba(0,0,0,.06);
     }
+    html{ scrollbar-gutter: stable; }
     *{ box-sizing:border-box; }
     body{
       margin:0;
@@ -64,7 +64,9 @@
       white-space:nowrap;
     }
     .dot{
-      width:10px;height:10px;border-radius:999px;background:#111;display:inline-block;
+      width:10px;height:10px;border-radius:999px;
+      background: var(--primary);
+      display:inline-block;
     }
     .nav-links{
       display:flex;
@@ -79,7 +81,16 @@
       padding:8px 10px;
       border-radius:10px;
     }
-    .nav-links a:hover{ background:var(--soft); color:var(--fg); }
+    .nav-links a:hover{
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .nav-links a.active{
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 800;
+    }
+
     .btn{
       display:inline-flex;
       align-items:center;
@@ -100,13 +111,24 @@
       color:#fff;
       border-color:var(--primary);
     }
-    .btn.ghost{ background:#fff; color:#111; }
+    .btn.ghost{
+      background:#fff;
+      color:var(--primary);
+      border-color: var(--primary-light);
+    }
     .btn.small{ padding:8px 12px; border-radius:12px; }
 
-    /* Hero */
-    .hero{
-      padding: 34px 0 10px;
+    /* Content swap animation (切換內容淡入) */
+    #content.is-loading{
+      opacity: 0;
+      transform: translateY(6px);
     }
+    #content{
+      transition: opacity .18s ease, transform .18s ease;
+    }
+
+    /* Hero */
+    .hero{ padding: 34px 0 10px; }
     .badge-row{
       display:flex;
       gap:10px;
@@ -141,6 +163,12 @@
       color:var(--muted);
       max-width: 72ch;
       margin:0 0 16px;
+
+      /* 入場動畫（你原本已加） */
+      opacity: 0;
+      transform: translateY(12px);
+      animation: heroFadeUp 0.9s ease-out forwards;
+      animation-delay: 0.25s;
     }
     .hero-actions{
       display:flex;
@@ -155,10 +183,7 @@
       padding: 16px;
       box-shadow: var(--shadow);
     }
-    .panel h3{
-      margin: 0 0 8px;
-      font-size: 16px;
-    }
+    .panel h3{ margin: 0 0 8px; font-size: 16px; }
     .panel p{ margin:0; color:var(--muted); }
     .panel .meta{
       display:grid;
@@ -171,16 +196,8 @@
       border-radius: 14px;
       padding: 12px;
     }
-    .meta-item .k{
-      font-weight:800;
-      font-size:13px;
-      margin:0 0 2px;
-    }
-    .meta-item .v{
-      margin:0;
-      color:var(--muted);
-      font-size:14px;
-    }
+    .meta-item .k{ font-weight:800; font-size:13px; margin:0 0 2px; }
+    .meta-item .v{ margin:0; color:var(--muted); font-size:14px; }
 
     /* Sections */
     section{
@@ -217,20 +234,13 @@
       background: var(--soft);
       box-shadow: var(--shadow);
     }
-    .card h3{
-      margin:0 0 8px;
-      font-size:16px;
-    }
+    .card h3{ margin:0 0 8px; font-size:16px; }
     .card p{ margin:0; color:var(--muted); }
     ul{ margin:10px 0 0; padding-left: 18px; color:var(--muted); }
     li{ margin: 6px 0; }
 
     /* Timeline */
-    .timeline{
-      display:grid;
-      gap:10px;
-      margin-top:10px;
-    }
+    .timeline{ display:grid; gap:10px; margin-top:10px; }
     .step{
       display:flex;
       gap:12px;
@@ -279,45 +289,112 @@
     }
     @media (max-width: 720px){
       .card{ grid-column: span 12; }
-      .nav-links a{ display:none; } /* 手機先簡化：保留按鈕即可 */
+      .nav-links a{ display:none; }
+    }
+
+    /* Hero Title Entrance Animation */
+    .hero-title{
+      opacity: 0;
+      transform: translateY(16px);
+      animation: heroFadeUp 0.9s ease-out forwards;
+    }
+    @keyframes heroFadeUp{
+      to{ opacity: 1; transform: translateY(0); }
+    }
+
+    /* Meeting Timeline (Detailed) */
+    .meeting-timeline{
+      position: relative;
+      margin-top: 28px;
+      padding-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .meeting-line{
+      position: absolute;
+      top: 30px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--primary-light);
+      z-index: 0;
+    }
+    .meeting-item{
+      position: relative;
+      text-align: center;
+      z-index: 1;
+    }
+    .meeting-item .dot{
+      width: 14px;
+      height: 14px;
+      margin: 0 auto 8px;
+      border-radius: 999px;
+      background: var(--primary);
+    }
+    .meeting-item .date{ font-weight: 800; margin: 0; }
+    .meeting-item .stage{
+      margin: 4px 0 2px;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .meeting-item .time{
+      margin: 0 0 2px;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .meeting-item .desc{
+      margin: 4px auto 0;
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 20ch;
+    }
+    @media (max-width: 720px){
+      .meeting-timeline{ grid-template-columns: 1fr; gap: 24px; }
+      .meeting-line{ display: none; }
+      .meeting-item{ text-align: left; padding-left: 22px; }
+      .meeting-item .dot{ position: absolute; left: 0; top: 4px; }
+      .meeting-item .desc{ max-width: none; }
     }
   </style>
 </head>
 
 <body>
-  <!-- ✅ 你只要改這個連結 -->
   <script>
-    const FORM_URL = "https://example.com"; // TODO: 改成你的 Google 表單連結
+    const FORM_URL = "https://forms.gle/fo8eGjenargHuh4g7"; // TODO: 改成你的 Google 表單連結
     function goApply(){ window.open(FORM_URL, "_blank", "noopener"); }
   </script>
 
-  <!-- 導覽列 -->
+  <!-- 導覽列（保持固定不動） -->
   <div class="nav">
     <div class="nav-inner">
       <div class="brand"><span class="dot"></span>Giving 行動計畫</div>
       <div class="nav-links">
-        <a href="index.html">計畫介紹</a>
-        <a href="apply.html">申請辦法</a>
-        <a href="outcomes.html">行動成果</a>
-        <a href="faq.html">FAQ</a>
+        <a data-nav href="/giving-project/">計畫介紹</a>
+        <a data-nav href="/giving-project/apply/">申請辦法</a>
+        <a data-nav href="/giving-project/results/">行動成果</a>
+        <a data-nav href="/giving-project/faq/">FAQ</a>
       </div>
       <button class="btn primary" onclick="goApply()">立即報名</button>
     </div>
   </div>
 
-  <main class="container">
+  <!-- ✅ 重要：加上 id="content"，之後只替換這裡 -->
+  <main id="content" class="container">
 
     <!-- Hero -->
     <div class="hero">
       <div class="badge-row">
-        <div class="badge">4 個月｜可執行、可完成</div>
+        <div class="badge">3 個月｜可執行、可完成</div>
         <div class="badge">經費支持｜里程碑階段性發放</div>
         <div class="badge">每月線下聚會</div>
       </div>
 
       <div class="hero-grid">
         <div>
-          <h1>把信仰活進生活<br>用行動回應世界的需要</h1>
+          <h1 class="hero-title">把信仰活進生活<br>用行動回應世界的需要</h1>
           <p class="lead">
             Giving 行動計畫是一項支持年輕世代發起社會行動的實踐型計畫，聚焦於「可執行、可完成」的行動提案。
             透過經費支持與實體討論，本計畫協助參與者在三個月內將想法轉化為實際行動，累積真實影響，在社會中發揮正向力量。
@@ -330,7 +407,7 @@
 
           <div class="cta-band" style="margin-top:18px;">
             <div>
-              <strong>報名截止：</strong>2026/1/28 23:59（名額上限 10 人，超額將篩選）
+              <strong>報名截止：</strong>2026/2/15 23:59（名額上限 10 人，超額將篩選）
               <p style="margin-top:6px;">優先錄取具體、可在三個月內完成行動的提案。</p>
             </div>
             <button class="btn primary" onclick="goApply()">立即報名</button>
@@ -343,7 +420,7 @@
           <div class="meta">
             <div class="meta-item">
               <p class="k">執行期間</p>
-              <p class="v">2026 年 2 月 – 2026 年 5 月</p>
+              <p class="v">2026 年 3 月初 – 2026 年 6月初</p>
             </div>
             <div class="meta-item">
               <p class="k">實體聚會</p>
@@ -372,23 +449,61 @@
               <div class="num">1</div>
               <div class="txt">
                 <p class="t">報名與甄選</p>
-                <p class="d">截止：2026/1/28 23:59（名額上限 10 人，超額將篩選）</p>
+                <p class="d">截止：2026/2/15 23:59（名額上限 10 人，超額將篩選）</p>
               </div>
             </div>
             <div class="step">
               <div class="num">2</div>
               <div class="txt">
                 <p class="t">執行期（3 個月）</p>
-                <p class="d">2026 年 2 月 – 2026 年 5 月：將想法轉化為實際行動</p>
+                <p class="d">2026 年 3 月 – 2026 年 6 月：將想法轉化為實際行動</p>
               </div>
             </div>
             <div class="step">
               <div class="num">3</div>
               <div class="txt">
                 <p class="t">每月線下聚會（共 4 次）</p>
-                <p class="d">討論、分享進度、互相回饋（含結案會議）</p>
+                <p class="d">討論、分享進度、互相回饋（含結案發表會議）</p>
               </div>
             </div>
+
+            <!-- Detailed Meeting Timeline -->
+            <div class="meeting-timeline">
+              <div class="meeting-line"></div>
+
+              <div class="meeting-item">
+                <div class="dot"></div>
+                <p class="date">3/7（六）</p>
+                <p class="time">13:00 - 16:30</p>
+                <p class="stage">啟動會議</p>
+                <p class="desc">確認行動目標、釐清執行方向與三個月行動節奏</p>
+              </div>
+
+              <div class="meeting-item">
+                <div class="dot"></div>
+                <p class="date">4/4（六）</p>
+                <p class="time">13:00 - 16:30</p>
+                <p class="stage">初期回顧</p>
+                <p class="desc">分享實際執行狀況，調整策略與資源配置</p>
+              </div>
+
+              <div class="meeting-item">
+                <div class="dot"></div>
+                <p class="date">5/2（六）</p>
+                <p class="time">13:00 - 16:30</p>
+                <p class="stage">中後期衝刺</p>
+                <p class="desc">處理卡關問題，聚焦成果產出與影響力</p>
+              </div>
+
+              <div class="meeting-item">
+                <div class="dot"></div>
+                <p class="date">6/6（六）</p>
+                <p class="time">13:00 - 16:30</p>
+                <p class="stage">成果發表／結案</p>
+                <p class="desc">行動成果分享、反思與下一步可能性</p>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -477,7 +592,7 @@
       <div class="cta-band">
         <div>
           <strong>準備好了就開始。</strong>
-          <p style="margin-top:6px;">用四個月，把你的想法做出來，讓祝福被看見。</p>
+          <p style="margin-top:6px;">用三個月，把你的想法做出來，讓祝福被看見。</p>
         </div>
         <button class="btn primary" onclick="goApply()">立即報名</button>
       </div>
@@ -510,5 +625,89 @@
       <div>© Giving 行動計畫</div>
     </div>
   </footer>
+
+  <!-- ✅ 內容替換（不刷新）核心 JS -->
+  <script>
+    (function () {
+      const content = document.getElementById("content");
+      if (!content) return;
+
+      function normalizePath(p) {
+        return (p || "/").replace(/index\.html$/i, "").replace(/\/+$/, "/");
+      }
+
+      function setActiveNav(pathname) {
+        const current = normalizePath(pathname);
+        document.querySelectorAll(".nav-links a[data-nav]").forEach(a => {
+          a.classList.remove("active");
+          const href = a.getAttribute("href") || "";
+          if (normalizePath(href) === current) a.classList.add("active");
+        });
+      }
+
+      async function loadPage(url, push) {
+        content.classList.add("is-loading");
+        try {
+          const res = await fetch(url, { credentials: "same-origin" });
+          if (!res.ok) throw new Error("HTTP " + res.status);
+
+          const html = await res.text();
+          const doc = new DOMParser().parseFromString(html, "text/html");
+          const next = doc.getElementById("content");
+
+          if (!next) {
+            window.location.href = url; // 找不到 content 就退回正常跳轉
+            return;
+          }
+
+          // 換內容
+          content.innerHTML = next.innerHTML;
+
+          // 更新 title
+          document.title = doc.title || document.title;
+
+          // 更新網址
+          if (push) history.pushState({}, "", url);
+
+          // 回到頂部（你也可改成保留 scroll）
+          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+          // 更新 active
+          setActiveNav(location.pathname);
+
+        } catch (e) {
+          window.location.href = url;
+        } finally {
+          // 小延遲讓淡入更自然
+          requestAnimationFrame(() => content.classList.remove("is-loading"));
+        }
+      }
+
+      // 攔截導覽列點擊
+      document.addEventListener("click", (e) => {
+        const a = e.target.closest("a[data-nav]");
+        if (!a) return;
+
+        const href = a.getAttribute("href");
+        // 允許 ctrl/cmd 開新分頁
+        if (e.metaKey || e.ctrlKey) return;
+
+        // 同頁 hash（例如 #timeline）不要攔
+        if (href.includes("#")) return;
+
+        e.preventDefault();
+        loadPage(href, true);
+      });
+
+      // 上一頁 / 下一頁
+      window.addEventListener("popstate", () => {
+        loadPage(location.pathname, false);
+      });
+
+      // 初次進站設定 active
+      setActiveNav(location.pathname);
+    })();
+  </script>
 </body>
 </html>
+
