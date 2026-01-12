@@ -11,7 +11,7 @@
 
 <body>
   <script>
-    const FORM_URL = "https://forms.gle/fo8eGjenargHuh4g7"; // TODO: 改成你的 Google 表單連結
+    const FORM_URL = "https://forms.gle/fo8eGjenargHuh4g7";
     function goApply(){ window.open(FORM_URL, "_blank", "noopener"); }
   </script>
 
@@ -26,10 +26,16 @@
         <a data-nav href="/giving-project/faq/">FAQ</a>
       </div>
       <button class="btn primary" onclick="goApply()">立即報名</button>
+      <button class="menu-btn" id="menuBtn" aria-label="開啟選單">☰</button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a data-nav href="/giving-project/">計畫介紹</a>
+      <a data-nav href="/giving-project/apply/">申請辦法</a>
+      <a data-nav href="/giving-project/results/">行動成果</a>
+      <a data-nav href="/giving-project/faq/">FAQ</a>
     </div>
   </div>
 
-  <!-- ✅ 重要：加上 id="content"，之後只替換這裡 -->
   <main id="content" class="container">
 
     <!-- Hero -->
@@ -55,10 +61,12 @@
 
           <div class="cta-band" style="margin-top:18px;">
             <div>
-              <strong>報名截止：</strong>2026/2/15 23:59（名額上限 10 人，超額將篩選）
+              <strong>報名截止：</strong>2026/2/15 23:59（名額上限 10 人，並須通過審核）
               <p style="margin-top:6px;">優先錄取具體、可在三個月內完成行動的提案。</p>
             </div>
             <button class="btn primary" onclick="goApply()">立即報名</button>
+            
+
           </div>
         </div>
 
@@ -96,8 +104,8 @@
             <div class="step">
               <div class="num">1</div>
               <div class="txt">
-                <p class="t">報名與甄選</p>
-                <p class="d">截止：2026/2/15 23:59（名額上限 10 人，超額將篩選）</p>
+                <p class="t">報名與審核</p>
+                <p class="d">截止：2026/2/15 23:59（至多錄取10人）</p>
               </div>
             </div>
             <div class="step">
@@ -167,9 +175,9 @@
       <div class="grid">
         <div class="card">
           <h3>申請核心</h3>
-          <p>只要你的行動核心是「耶穌基督作在最小弟兄身上、發揮社會影響力」即可申請。</p>
+          <p>只要你的行動核心是「耶穌基督的愛作在最小弟兄身上、發揮社會影響力」即可申請</p>
           <ul>
-            <li>形式、題材、創意不限</li>
+            <li>形式、題材、創意不限，但需清楚說明，提案如何符合以上行動核心</li>
             <li>規模以「可於 3 個月內完成」為原則</li>
           </ul>
         </div>
@@ -201,7 +209,7 @@
         </div>
         <div class="card soft">
           <h3>合理成本、非個人收益</h3>
-          <p>專案內容合理、可實踐者資助金額無上限，但預算需為合理成本與費用所需，非取得個人收益。</p>
+          <p>預算需為合理成本與費用所需，非取得個人收益。請清楚逐項列出執行計劃所需之費用。</p>
         </div>
         <div class="card soft" style="grid-column: span 12;">
           <h3>未執行／未回報將無法獲得後續資助</h3>
@@ -219,10 +227,11 @@
 
       <div class="grid">
         <div class="card">
-          <h3>資格對象</h3>
+          <h3>資格對象 (1和2均須符合)</h3>
           <ul>
-            <li>聖約翰座堂週六青年聚會、臺北真理堂學青網絡及教友</li>
-            <li>願意實際投入行動與分享成果者</li>
+            <li>1. 僅限聖約翰座堂週六青年聚會及台北真理堂學青網絡受邀請的對象，以及</li>
+            <li>2. 願意實際投入行動與分享成果者</li>
+            <p>請注意：並非報名即錄取，審核通過者才能加入本計畫</p>
           </ul>
         </div>
         <div class="card">
@@ -274,9 +283,11 @@
     </div>
   </footer>
 
-  <!-- ✅ 內容替換（不刷新）核心 JS -->
+  <!--  內容替換（不刷新）核心 JS -->
   <script>
     (function () {
+ 
+      // 攔截導覽列點擊
       const content = document.getElementById("content");
       if (!content) return;
 
@@ -286,11 +297,18 @@
 
       function setActiveNav(pathname) {
         const current = normalizePath(pathname);
-        document.querySelectorAll(".nav-links a[data-nav]").forEach(a => {
+        document.querySelectorAll(".nav-links a[data-nav], .mobile-menu a[data-nav]").forEach(a => {
           a.classList.remove("active");
           const href = a.getAttribute("href") || "";
           if (normalizePath(href) === current) a.classList.add("active");
         });
+      }
+
+      function scrollToHash(hash) {
+        if (!hash) return;
+        const id = hash.startsWith("#") ? hash : "#" + hash;
+        const el = document.querySelector(id);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
       }
 
       async function loadPage(url, push) {
@@ -298,65 +316,86 @@
         try {
           const res = await fetch(url, { credentials: "same-origin" });
           if (!res.ok) throw new Error("HTTP " + res.status);
-
           const html = await res.text();
           const doc = new DOMParser().parseFromString(html, "text/html");
           const next = doc.getElementById("content");
+          if (!next) return (window.location.href = url);
 
-          if (!next) {
-            window.location.href = url; // 找不到 content 就退回正常跳轉
-            return;
-          }
-
-          // 換內容
           content.innerHTML = next.innerHTML;
-
-          // 更新 title
           document.title = doc.title || document.title;
 
-          // 更新網址
           if (push) history.pushState({}, "", url);
 
-          // 回到頂部（你也可改成保留 scroll）
-          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+          // ✅ 若 url 含 hash，等內容換好後再捲動
+          const hash = new URL(url, location.origin).hash;
+          if (hash) {
+            // 等一個 frame，確保 DOM 已更新
+            requestAnimationFrame(() => scrollToHash(hash));
+          } else {
+            window.scrollTo({ top: 0, left: 0 });
+          }
 
-          // 更新 active
           setActiveNav(location.pathname);
-
         } catch (e) {
           window.location.href = url;
         } finally {
-          // 小延遲讓淡入更自然
           requestAnimationFrame(() => content.classList.remove("is-loading"));
         }
       }
 
-      // 攔截導覽列點擊
       document.addEventListener("click", (e) => {
-        const a = e.target.closest("a[data-nav]");
+        const a = e.target.closest("a");
         if (!a) return;
 
         const href = a.getAttribute("href");
-        // 允許 ctrl/cmd 開新分頁
-        if (e.metaKey || e.ctrlKey) return;
+        if (!href) return;
 
-        // 同頁 hash（例如 #timeline）不要攔
-        if (href.includes("#")) return;
+        // ✅ 1) 純頁內錨點：#timeline
+        if (href.startsWith("#")) {
+          const target = document.querySelector(href);
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+            history.pushState(null, "", href); // 讓網址列顯示 #timeline
+          }
+          return;
+        }
 
-        e.preventDefault();
-        loadPage(href, true);
+        // ✅ 2) 站內頁面 + hash：/giving-project/#timeline 或 /apply/#xxx
+        // 只攔截同源（你的 GitHub Pages）且標註 data-nav 的連結
+        if (a.hasAttribute("data-nav")) {
+          e.preventDefault();
+          loadPage(href, true);
+        }
       });
 
-      // 上一頁 / 下一頁
       window.addEventListener("popstate", () => {
-        loadPage(location.pathname, false);
+        // 回上一頁若含 hash，也會捲動
+        loadPage(location.pathname + location.search + location.hash, false);
       });
 
-      // 初次進站設定 active
+      // ✅ 首次進站若網址含 #timeline，也自動捲動
       setActiveNav(location.pathname);
+      if (location.hash) requestAnimationFrame(() => scrollToHash(location.hash));
     })();
+    // 手機版menu介面
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+    if (menuBtn && mobileMenu){
+      menuBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("open");
+      });
+
+      // 點選單項目後自動收起
+      mobileMenu.addEventListener("click", (e) => {
+        const a = e.target.closest("a");
+        if (a) mobileMenu.classList.remove("open");
+      });
+    }
+
   </script>
 </body>
 </html>
+
 
 
